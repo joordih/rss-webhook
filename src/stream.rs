@@ -1,6 +1,10 @@
-use std::time::Duration;
+use std::io::Cursor;
+use std::{io::BufReader, time::Duration};
 
 use app::{DateTime, FixedOffset};
+
+use crate::error::FeedParseError;
+use crate::Error;
 
 pub trait FeedReader {
     fn title(&self) -> Option<&str>;
@@ -66,4 +70,27 @@ type Endpoint = reqwest::Url;
 pub struct Stream<> {
     endpoint: Endpoint,
     interval: Duration,
+}
+
+impl Stream<> {
+    pub fn new(endpoint: Endpoint, interval: Duration) -> Stream<> {
+        Stream {
+            endpoint,
+            interval
+        }
+    }
+
+    pub fn parse_feed(&self, body: &str) -> Result<Feed, Error> {
+        match body.parse::<atom_syndication::Feed>() {
+            Ok(feed) => Ok(Feed::ATOM(feed)),
+            Err(err) => {
+                print!("Atom error: {:?}", err);
+                
+                match rss::Channel::read_from(BufReader::new(Cursor::new(body))) {
+                    Ok(feed) => Ok(Feed::RSS((feed))),
+                    Err(err) => Err(Error::FeedParseError(FeedParseError::RssError(err)))
+                }
+            }
+         }
+    }
 }

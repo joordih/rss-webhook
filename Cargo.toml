@@ -9,10 +9,14 @@ edition = "2021"
 atom_syndication = { version = "0.12", features = ["with-serde"] }
 http = "1.2.0"
 chrono = { version = "0.4.27", default-features = false }
+miette = { version = "7.2.0", features = ["fancy"] }
+thiserror = "1.0.58"
 reqwest = { version = "0.11", features = ["json", "blocking"] }
 rss = "2.0"
+rand = "0.8"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", optional = true }
 tokio = { version = "1", features = ["full"] }
 syndication = "0.5.0"
+bytes = "1.1.0"
 flate2 = "1.0"

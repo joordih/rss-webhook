@@ -30,8 +30,9 @@
         # Open editors for the following files by default, if they exist:
         default.openFiles = [
           "src/main.rs"
-          "src/stream.rs"
+          "src/error.rs"
           "src/lib.rs"
+          "src/stream.rs"
         ];
       };
     };
