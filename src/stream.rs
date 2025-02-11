@@ -87,10 +87,97 @@ impl Stream<> {
                 print!("Atom error: {:?}", err);
                 
                 match rss::Channel::read_from(BufReader::new(Cursor::new(body))) {
-                    Ok(feed) => Ok(Feed::RSS((feed))),
+                    Ok(feed) => Ok(Feed::RSS(feed)),
                     Err(err) => Err(Error::FeedParseError(FeedParseError::RssError(err)))
                 }
             }
          }
     }
 }
+
+
+pub struct SecDocument {
+    header: FilingHeader,
+    filer: FilingFiler,
+    document: Vec<FilingDocument>,
+}
+
+//
+//   █▀ █ █   █ █▄ █ ▄▀     █▀ █ █   ██▀ █▀▄ ▄▀▀ 
+//   █▀ █ █▄▄ █ █ ▀█ ▀▄█    █▀ █ █▄▄ █▄▄ █▀▄ ▄█▀ 
+//
+
+pub struct FilingFiler<> {
+    company_data: CompanyData,
+    filing_values: FilingValues,
+    business_address: BusinessAddress,
+    mail_address: MailAddress,
+    former_company: Vec<FormerCompany>,
+}
+
+pub struct CompanyData<> {
+    name: String,
+    cik: String,
+    sic: String,
+    organization_name: String,
+    irs_number: String,
+    fiscal_year_end: String,
+}
+
+pub struct FilingValues<> {
+    form_type: Type,
+    sec_act: String,
+    sec_file_number: String,
+    film_number: String,
+}
+
+pub struct BusinessAddress<> {
+    primary_street: String,
+    secondary_street: String,
+    city: String,
+    state: String,
+    zip: String,
+    business_phone: String,
+}
+
+pub struct MailAddress {
+    primary_street: String,
+    secondary_street: String,
+    city: String,
+    state: String,
+    zip: String,
+}
+
+pub struct FormerCompany {
+    former_conformed_name: String,
+    date_of_name_change: String
+}
+
+pub struct FilingHeader<> {
+    accession_number: String,
+    filing_type: Type,
+    accepted_date: DateTime<FixedOffset>,
+    period_of_report: DateTime<FixedOffset>,
+    filed_date: DateTime<FixedOffset>,
+    changed_date: DateTime<FixedOffset>,
+}
+
+pub struct FilingDocument {
+    document_type: Type,
+    sequence: String,
+    filename: String,
+    description: String,
+    document_label: String,
+    document_url: String,
+}
+
+pub enum Type {
+    K10,
+    Q10,
+    K8
+}
+
+//
+//   █▀ █ █   █ █▄ █ ▄▀     █▀ █ █   ██▀ █▀▄ ▄▀▀ 
+//   █▀ █ █▄▄ █ █ ▀█ ▀▄█    █▀ █ █▄▄ █▄▄ █▀▄ ▄█▀ 
+//

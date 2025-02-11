@@ -16,8 +16,8 @@ pub enum Error {
     #[error(transparent)]
     FeedParseError(#[from] FeedParseError),
 
-    #[error("Feed with URL `{0}' not found in database")]
-    FeedNotFound(String),
+    // #[error("Feed with URL `{0}' not found in database")]
+    // FeedNotFound(String),
 }
 
 #[derive(Error, Debug, Diagnostic)]
